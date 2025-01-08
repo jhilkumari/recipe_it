@@ -1,0 +1,44 @@
+<%- include("partials/header.ejs") %>
+<div id="result"></div>
+<% if(locals.data){%>
+   <% var random =Math.floor(Math.random()*data.meals.length) %>
+   <%const myMeal=data.meals[random]%>
+   <% const image=myMeal.strMealThumb %>
+    <img src="<%=image%>" alt="">
+    <div class="details">
+        <h2><%=myMeal.strMeal%></h2>
+        <h4><%= myMeal.strArea %></h4>
+    </div>
+
+    <%let count = 1;%>
+    <%let ingredients = [];%>
+    <%for (let i in myMeal) {%>
+        <%let ingredient = "";%>
+        <%let measure = "";%>
+        <%if (i.startsWith("strIngredient") && myMeal[i]) {%>
+        <%ingredient = myMeal[i];%>
+        <%measure = myMeal[`strMeasure` + count];%>
+        <%count += 1;%>
+        <%ingredients.push(`${measure} ${ingredient}`);%>
+        <%}%>
+    <%}%>
+    <div id="ingredient-con">
+        <ul>
+            <%  ingredients.forEach((i) => {%>
+                <li><%= i %></li>
+              <%})%>
+        </ul>
+    </div>
+    
+    <div id="recipe">
+        <h3>Instructions</h3>
+        <pre id="instructions"><%=myMeal.strInstructions%></pre>
+    </div>
+    
+
+    <%}else if(locals.error){ %>
+        <%= error %>
+    <% } %>
+</div>
+
+<%- include("partials/footer.ejs") %>
