@@ -21,7 +21,7 @@ body {
     font-size: 16px;
     padding: 3rem 2.8rem;
     width: 100vh;
-    max-width: 32rem;
+    max-width: 82rem;
     position: absolute;
     transform: translateX(-50%);
     left: 50%;
@@ -210,6 +210,15 @@ h3 {
 .recipe-card p {
     font-size: 1rem;
     color: var(--darker);
+}
+
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.6;
+    font-size: 1rem;
 }
 
 /* Responsive Design */

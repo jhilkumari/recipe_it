@@ -1,24 +1,32 @@
-<% if (data.meals) { %>
-    <% const myMeal = data.meals[0]; %>   
-    <div class="recipe-detail">
-        <img src="<%= myMeal.strMealThumb %>" alt="<%= myMeal.strMeal %>">
-        <div class="details">
-            <h2><%= myMeal.strMeal %></h2>
-            <h4><%= myMeal.strArea %> - <%= myMeal.strCategory %></h4>
-        </div>
+<%- include("partials/header.ejs") %>
 
-        <h3>Ingredients</h3>
-        <ul>
-            <% for (let i = 1; i <= 20; i++) { %>
-                <% if (myMeal["strIngredient" + i]) { %>
-                    <li><%= myMeal["strMeasure" + i] %> <%= myMeal["strIngredient" + i] %></li>
+<div class="container">
+
+    <% if (data.meals) { %>
+        <% const myMeal = data.meals[0]; %>   
+        <div class="recipe-detail">
+            <img src="<%= myMeal.strMealThumb %>" alt="<%= myMeal.strMeal %>">
+            <div class="details">
+                <h2><%= myMeal.strMeal %></h2>
+                <h4><%= myMeal.strArea %> - <%= myMeal.strCategory %></h4>
+            </div>
+
+            <h3>Ingredients</h3>
+            
+            <ul>
+                <% for (let i = 1; i <= 20; i++) { %>
+                    <% if (myMeal["strIngredient" + i]) { %>
+                        <li><%= myMeal["strMeasure" + i] %> <%= myMeal["strIngredient" + i] %></li>
+                    <% } %>
                 <% } %>
-            <% } %>
-        </ul>
+            </ul>
 
-        <h3>Instructions</h3>
-        <pre><%= myMeal.strInstructions %></pre>
-    </div>
-<% } else { %>
-    <p>No recipe found.</p>
-<% } %>
+            <h3>Instructions</h3>
+            <pre id="recipe"><%= myMeal.strInstructions %></pre>
+        </div>
+    <% } else { %>
+        <p>No recipe found.</p>
+    <% } %>
+</div>
+
+<%- include("partials/footer.ejs") %>
