@@ -1,43 +1,29 @@
 <%- include("partials/header.ejs") %>
-<div id="result"></div>
-<% if(locals.data){%>
-   <% var random =Math.floor(Math.random()*data.meals.length) %>
-   <%const myMeal=data.meals[random]%>
-   <% const image=myMeal.strMealThumb %>
-    <img src="<%=image%>" alt="">
-    <div class="details">
-        <h2><%=myMeal.strMeal%></h2>
-        <h4><%= myMeal.strArea %></h4>
+
+<div class="container">
+    <div class="search-container">
+        <form action="/" method="post">
+            <input type="text" placeholder="Type a Dish name here..." id="user-inp" name="meal" autocomplete="off">
+            <button id="search-btn" type="submit">Search</button>
+        </form>
     </div>
 
-    <%let count = 1;%>
-    <%let ingredients = [];%>
-    <%for (let i in myMeal) {%>
-        <%let ingredient = "";%>
-        <%let measure = "";%>
-        <%if (i.startsWith("strIngredient") && myMeal[i]) {%>
-        <%ingredient = myMeal[i];%>
-        <%measure = myMeal[`strMeasure` + count];%>
-        <%count += 1;%>
-        <%ingredients.push(`${measure} ${ingredient}`);%>
-        <%}%>
-    <%}%>
-    <div id="ingredient-con">
-        <ul>
-            <%  ingredients.forEach((i) => {%>
-                <li><%= i %></li>
-              <%})%>
-        </ul>
-    </div>
-    
-    <div id="recipe">
-        <h3>Instructions</h3>
-        <pre id="instructions"><%=myMeal.strInstructions%></pre>
-    </div>
-    
+    <% if (error) { %>
+        <p class="error-message"><%= error %></p>
+    <% } %>
 
-    <%}else if(locals.error){ %>
-        <%= error %>
+    <% if (data && data.meals) { %>
+        <div class="recipe-list">
+            <% data.meals.forEach(meal => { %>
+                <div class="recipe-card">
+                    <a href="/recipe/<%= meal.idMeal %>">
+                        <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>">
+                        <h3><%= meal.strMeal %></h3>
+                        <p><%= meal.strArea %> Cuisine</p>
+                    </a>
+                </div>
+            <% }); %>
+        </div>
     <% } %>
 </div>
 
