@@ -1,14 +1,22 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Dynamic port for Vercel
 
-app.use(express.static("public"));
+// Set up middleware
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Set view engine and views directory
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // Render the homepage with default values
 app.get("/", (req, res) => {
@@ -19,29 +27,28 @@ app.get("/", (req, res) => {
 app.post("/", async (req, res) => {
   try {
     const type = req.body.meal;
-    console.log(`Fetching recipes for: ${type}`); // Debugging input
+    console.log(`Fetching recipes for: ${type}`);
 
     const response = await axios.get(
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${type}`
     );
 
-    console.log("API Response:", response.data); // Log entire API response
+    console.log("API Response:", response.data);
 
     const result = response.data;
 
-    // Debugging: Check if result.meals exists
     if (!result.meals || result.meals.length === 0) {
-      console.log("No meals found in API response.");
+      console.log("No meals found.");
       return res.render("index", {
         data: null,
         error: "No recipes found. Try another search!",
       });
     }
 
-    console.log(`Found ${result.meals.length} meals.`); // Log number of meals
+    console.log(`Found ${result.meals.length} meals.`);
     res.render("index", { data: result, error: null });
   } catch (error) {
-    console.error("Failed to make request:", error.message);
+    console.error("Failed to fetch recipes:", error.message);
     res.render("index", {
       data: null,
       error: "Something went wrong. Please try again later.",
